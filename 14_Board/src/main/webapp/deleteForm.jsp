@@ -44,7 +44,7 @@
 		<tr>
 			<td>
 				<input type="submit" value="글삭제">
-				<input type="button" value="글목록" onClick="location.href='list.jsp'">
+				<input type="button" value="글목록" onClick="location.href='list.jsp?pageNum=<%=pageNum%>'">
 			</td>
 		</tr>
 	</table>
