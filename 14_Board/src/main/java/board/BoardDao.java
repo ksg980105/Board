@@ -285,4 +285,51 @@ public class BoardDao {
 		}
 		return cnt;
 	}
+	
+	public int replyArticle(BoardBean bb) {
+		int cnt = -1;
+		String sql2 = "update board set re_step=re_step+1 where ref=? and re_step>?";
+		String sql = "insert into board(num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip) "
+				+ "values(board_seq.nextval,?,?,?,?,?,?,?,?,?,?)";
+		try {
+			ps = conn.prepareStatement(sql2);
+			ps.setInt(1, bb.getRef());
+			ps.setInt(2, bb.getRe_step());
+			ps.executeUpdate();
+			
+			int re_step = bb.getRe_step()+1;
+			int re_level = bb.getRe_level()+1;
+			
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, bb.getWriter());
+			ps.setString(2, bb.getEmail());
+			ps.setString(3, bb.getSubject());
+			ps.setString(4, bb.getPasswd());
+			ps.setTimestamp(5, bb.getReg_date());
+			ps.setInt(6, bb.getRef());
+			ps.setInt(7, re_step);
+			ps.setInt(8, re_level);
+			ps.setString(9, bb.getContent());
+			ps.setString(10, bb.getIp());
+			
+			cnt = ps.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
