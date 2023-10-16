@@ -226,4 +226,63 @@ public class BoardDao {
 		}
 		return cnt;
 	}
+	
+	public BoardBean getArticleByNum(int num) {
+		BoardBean bb = null;
+		String sql = "select * from board where num=?";
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, num);
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				bb = new BoardBean();
+				bb.setNum(rs.getInt("num"));
+				bb.setWriter(rs.getString("writer"));
+				bb.setSubject(rs.getString("subject"));
+				bb.setEmail(rs.getString("email"));
+				bb.setPasswd(rs.getString("passwd"));
+				bb.setReg_date(rs.getTimestamp("reg_date"));
+				bb.setReadcount(rs.getInt("readcount"));
+				bb.setRef(rs.getInt("ref"));
+				bb.setRe_step(rs.getInt("re_step"));
+				bb.setRe_level(rs.getInt("re_level"));
+				bb.setContent(rs.getString("content"));
+				bb.setIp(rs.getString("ip"));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return bb;
+	}
+	
+	public int updateArticle(BoardBean bb) {
+		int cnt = -1;
+		String sql = "select passwd from board where num=?";
+		
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, bb.getNum());
+			rs = ps.executeQuery();
+
+			if(rs.next()) {
+				if(bb.getPasswd().equals(rs.getString("passwd"))) {
+					String sql2 = "update board set writer=?, subject=?, email=?, content=? where num=?";
+					ps = conn.prepareStatement(sql2);
+					ps.setString(1, bb.getWriter());
+					ps.setString(2, bb.getSubject());
+					ps.setString(3, bb.getEmail());
+					ps.setString(4, bb.getContent());
+					ps.setInt(5, bb.getNum());
+					
+					cnt = ps.executeUpdate();
+				}
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
 }
