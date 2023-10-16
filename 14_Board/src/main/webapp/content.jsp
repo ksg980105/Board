@@ -18,6 +18,8 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	int num = Integer.parseInt(request.getParameter("num"));
+	String pageNum = request.getParameter("pageNum");
+	
 	BoardDao bdao = BoardDao.getInstance();
 	BoardBean bb = bdao.getArticle(num);
 	
@@ -50,9 +52,9 @@
 		<tr>
 			<td bgcolor="<%=value_c%>" colspan=4 align="right">
 				<input type="button" value="글수정">
-				<input type="button" value="글삭제" onClick="location.href='deleteForm.jsp?num=<%=bb.getNum()%>'">
+				<input type="button" value="글삭제" onClick="location.href='deleteForm.jsp?num=<%=bb.getNum()%>&pageNum=<%=pageNum%>'">
 				<input type="button" value="답글쓰기">
-				<input type="button" value="글목록" onClick="location.href='list.jsp'">
+				<input type="button" value="글목록" onClick="location.href='list.jsp?pageNum=<%=pageNum%>'">
 			</td>
 		</tr>	
 	</table>

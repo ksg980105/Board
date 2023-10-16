@@ -202,14 +202,24 @@ public class BoardDao {
 		return passwd;
 	}
 	
-	public int del(int num) {
+	public int deleteArticle(int num, String passwd) {
 		int cnt = -1;
-		String sql = "delete from board where num=?";
+		String sql = "select passwd from board where num=?";
 		
 		try {
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, num);
-			cnt = ps.executeUpdate();
+			rs = ps.executeQuery();
+
+			if(rs.next()) {
+				if(passwd.equals(rs.getString("passwd"))) {
+					String sql2 = "delete from board where num=?";
+					ps = conn.prepareStatement(sql2);
+					ps.setInt(1, num);
+					
+					cnt = ps.executeUpdate();
+				}
+			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

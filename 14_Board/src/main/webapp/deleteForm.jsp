@@ -24,6 +24,7 @@
 
 <%
 	int num = Integer.parseInt(request.getParameter("num"));
+	String pageNum = request.getParameter("pageNum");
 %>
 
 
@@ -37,6 +38,7 @@
 		<tr>
 			<td>비밀번호 : <input type="password" name="passwd">
 				<input type="hidden" name="num" value="<%=num%>">
+				<input type="hidden" name="pageNum" value="<%=pageNum%>">
 			</td>
 		</tr>
 		<tr>

@@ -20,16 +20,16 @@ list.jsp<br>
 	BoardDao bdao = BoardDao.getInstance();
 	System.out.println("list.jsp bdao:" + bdao);
 	
-	int pageSize = 2; // 
+	int pageSize = 10; //한페이지에 보일 개수
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 	
 	String pageNum = request.getParameter("pageNum"); // pageNum=2
 	if(pageNum == null){
 		pageNum = "1";
 	}
-	int currentPage = Integer.parseInt(pageNum); // 
-	int startRow = (currentPage-1) * pageSize + 1; // 
-	int endRow = currentPage * pageSize;
+	int currentPage = Integer.parseInt(pageNum); // 현재 페이지
+	int startRow = (currentPage-1) * pageSize + 1; // 시작 페이지번호
+	int endRow = currentPage * pageSize;	// 마지막 페이지번호
 	// 1:1,10
 	// 2:11,20
 	// 3:21,30
@@ -96,7 +96,7 @@ list.jsp<br>
 						}
 					%>
 					
-				<a href="content.jsp?num=<%=bb.getNum()%>">
+				<a href="content.jsp?num=<%=bb.getNum()%>&pageNum=<%=currentPage%>">
 					<%=bb.getSubject()%>
 				</a>
 				<%
@@ -120,7 +120,7 @@ list.jsp<br>
 				int pageCount = count/pageSize + (count%pageSize == 0 ? 0 : 1);
 							// pageSize:10 =>14:2 20:2 전체 페이지 개수
 						
-				int pageBlock = 3; // 보일수있는 최대 페이지 개수 한번에 10페이지만 보이게
+				int pageBlock = 3; // 보일수있는 최대 페이지 개수
 				int startPage = ((currentPage-1)/pageBlock * pageBlock)+1;
 				int endPage = startPage + pageBlock - 1;
 				//1page : start:1, end:3

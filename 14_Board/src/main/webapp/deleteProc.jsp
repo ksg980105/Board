@@ -7,23 +7,27 @@
 
 	int num = Integer.parseInt(request.getParameter("num"));
 	String passwd = request.getParameter("passwd");
+	int pageNum = Integer.parseInt(request.getParameter("pageNum"));
 	
 	BoardDao bdao = BoardDao.getInstance();
+	int check = bdao.deleteArticle(num, passwd);
 	
-	String msg = "";
-	String url = "";
-	if(bdao.getPasswd(num).equals(passwd)){
-		int cnt = bdao.del(num);
-		if(cnt != -1){
-			msg = "삭제완료";
-			url = "list.jsp";
+	if(check==1){
+		int count = bdao.getArticleCount();
+		int pageSize = 10;
+		int pageCount = count/pageSize + (count%pageSize == 0 ? 0 : 1);
+		if(pageCount<pageNum){
+			response.sendRedirect("list.jsp?pageNum=" + (pageNum-1));
+		}else{
+			response.sendRedirect("list.jsp?pageNum=" + pageNum);
 		}
 	}else{
-		msg = "비밀번호가 다릅니다.";
-		url = "deleteForm.jsp?num="+num;
-	}
 %>
 
-<script type="text/javascript">
-    location.href = "<%=url%>";
-</script>
+	<script language = "JavaScript">
+	alert("비밀번호가 맞지 않습니다");
+	history.go(-1);
+	</script>
+<%
+	}
+%>
